@@ -16,5 +16,7 @@ public class EmployeeConfiguration : IEntityTypeConfiguration<Employee>
         
         builder.Property(e => e.Post)
             .HasMaxLength(70);
+        
+        builder.Property(e => e.Id).ValueGeneratedOnAdd();
     }
 }

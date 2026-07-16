@@ -9,6 +9,8 @@ public class EmployeeRequestConfiguration : IEntityTypeConfiguration<EmployeeReq
 {
     public void Configure(EntityTypeBuilder<EmployeeRequest> builder)
     {
+        builder.Property(e => e.Id).ValueGeneratedOnAdd();
+        
         builder.HasOne(e => e.Author)
             .WithMany()
             .HasForeignKey(a => a.AuthorId)

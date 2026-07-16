@@ -1,6 +1,7 @@
 ﻿using EmployeeRequestManager.Application.DTO;
 using EmployeeRequestManager.Domain.Entities;
 using EmployeeRequestManager.Domain.Enums;
+using EmployeeRequestManager.Domain.Exceptions;
 using EmployeeRequestManager.Domain.Repositories;
 
 namespace EmployeeRequestManager.Application.Services;
@@ -37,7 +38,7 @@ public class EmployeeRequestService
             RequestCreationDate = employeeRequest.RequestCreationDate,
             RequestExpirationDate = employeeRequest.RequestExpirationDate,
             Description = employeeRequest.Description,
-            Status = employeeRequest.Status
+            Status = RecognizeStatus(employeeRequest.Status)
         };
         
         var author = await _employeeRepository.GetEmployeeByIdAsync(employeeRequest.AuthorId);
@@ -89,7 +90,7 @@ public class EmployeeRequestService
             RequestCreationDate = request.RequestCreationDate,
             RequestExpirationDate = request.RequestExpirationDate,
             Description = request.Description,
-            Status = request.Status,
+            Status = Enum.GetName(typeof(RequestStatus), request.Status),
             AuthorId = request.Author.Id,
             ExecutorId = request.Executor.Id
         };
@@ -105,5 +106,29 @@ public class EmployeeRequestService
         }
         
         return resultRequests;
+    }
+
+    private RequestStatus RecognizeStatus(string status)
+    {
+        status = status.ToLower();
+        
+        switch (status)
+        {
+            case "in progress":
+            case "в работе":
+                return RequestStatus.InProgress;
+            
+            case "completed": 
+            case "выполнена":
+            case "завершена":
+                return RequestStatus.Completed;
+            
+            case "new":
+            case "новая":
+                return RequestStatus.New;
+            
+            default:
+                throw new InvalidStatusException(status);
+        }
     }
 }

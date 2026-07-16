@@ -14,7 +14,7 @@ public class ReportsController
         _reportQuery = reportQuery;
     }
 
-    [HttpGet("overduerequests")]
+    [HttpGet("OverdueRequests")]
     public async Task<int> GetOverdueRequests()
     {
         var reports = await _reportQuery.GetReportAsync();

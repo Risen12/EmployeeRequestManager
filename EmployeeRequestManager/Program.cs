@@ -3,6 +3,7 @@ using EmployeeRequestManager.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 using EmployeeRequestManager.Infrastructure;
 using EmployeeRequestManager.Infrastructure.Repositories;
+using Scalar.AspNetCore;
 
 namespace EmployeeRequestManager;
 
@@ -19,14 +20,15 @@ public class Program
         builder.Services.AddScoped<IEmployeeRequestRepository, EmployeeRequestRepository>();
         builder.Services.AddScoped<EmployeeRequestService>();
         builder.Services.AddScoped<IReportQuery, ReportQuery>();
+        builder.Services.AddOpenApi();
         builder.Services.AddControllers();
         
         var app = builder.Build();
         app.MapControllers();
+        app.MapOpenApi();
+        app.MapScalarApiReference();
 
-        app.UseStaticFiles();
-
-        app.MapGet("/", () => "Hello World!");
+        //app.UseStaticFiles();
 
         app.Run();
     }
