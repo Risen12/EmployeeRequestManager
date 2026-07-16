@@ -17,7 +17,9 @@ public class EmployeeRequest
 
     public void ChangeStatus(RequestStatus newStatus)
     {
-        if (Status == RequestStatus.New && newStatus == RequestStatus.Completed)
+        if (Status == RequestStatus.New && newStatus != RequestStatus.InProgress
+            || Status == RequestStatus.InProgress && newStatus != RequestStatus.Completed
+            || Status == RequestStatus.Completed)
         {
             throw new InvalidStatusTransitionException(Status, newStatus);
         }
@@ -28,5 +30,6 @@ public class EmployeeRequest
     public void ChangeExecutor(Employee newExecutor)
     {
         Executor = newExecutor;
+        ExecutorId = newExecutor.Id;
     }
 }

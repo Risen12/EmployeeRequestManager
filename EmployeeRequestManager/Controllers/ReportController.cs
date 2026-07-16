@@ -5,7 +5,7 @@ namespace EmployeeRequestManager.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class ReportsController
+public class ReportsController : ControllerBase
 {
     private readonly IReportQuery _reportQuery;
 

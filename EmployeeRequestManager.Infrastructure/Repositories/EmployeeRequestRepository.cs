@@ -1,4 +1,5 @@
 ﻿using EmployeeRequestManager.Domain.Entities;
+using EmployeeRequestManager.Domain.Enums;
 using EmployeeRequestManager.Domain.Exceptions;
 using EmployeeRequestManager.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -59,6 +60,13 @@ public class EmployeeRequestRepository : IEmployeeRequestRepository
         var department = filter.Department;
         var executorId = filter.ExecutorId;
         var status = filter.Status;
+
+        if (filter.IsOverdue != null)
+        {
+            requests = requests.Where(r => r.Status == RequestStatus.InProgress 
+                                           || r.Status == RequestStatus.New
+                                           && r.RequestExpirationDate < DateTime.Now);
+        }
 
         if (department != null)
         { 

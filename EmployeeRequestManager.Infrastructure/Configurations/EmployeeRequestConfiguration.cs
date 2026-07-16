@@ -1,5 +1,5 @@
 ﻿using EmployeeRequestManager.Domain.Entities;
-using EmployeeRequestManager.Domain.Enums;
+using EmployeeRequestManager.Infrastructure.ValueConverters;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -22,9 +22,9 @@ public class EmployeeRequestConfiguration : IEntityTypeConfiguration<EmployeeReq
             .OnDelete(DeleteBehavior.Restrict);
         
         builder.Property(e => e.Status)
-            .HasConversion<string>(
-                e => e.ToString(),
-                e => (RequestStatus)Enum.Parse(typeof(RequestStatus), e));
+            .HasConversion(new StatusConverter())
+            .HasMaxLength(20)
+            .IsRequired();
         
         builder.Property(e => e.Description)
             .HasMaxLength(500);
