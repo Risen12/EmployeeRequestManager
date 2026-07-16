@@ -1,5 +1,6 @@
 ﻿using EmployeeRequestManager.Domain.Entities;
 using EmployeeRequestManager.Infrastructure.Configurations;
+using EmployeeRequestManager.Infrastructure.Seeding;
 using Microsoft.EntityFrameworkCore;
 
 namespace EmployeeRequestManager.Infrastructure;

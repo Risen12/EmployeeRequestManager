@@ -4,13 +4,14 @@ using EmployeeRequestManager.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 using EmployeeRequestManager.Infrastructure;
 using EmployeeRequestManager.Infrastructure.Repositories;
+using EmployeeRequestManager.Infrastructure.Seeding;
 using Scalar.AspNetCore;
 
 namespace EmployeeRequestManager;
 
 public class Program
 {
-    public static void Main(string[] args)
+    public static async Task Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
         
@@ -27,13 +28,23 @@ public class Program
         builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
         
         var app = builder.Build();
+
+        using (var scope = app.Services.CreateScope())
+        {
+            var db = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+
+            var seeder = new DataBaseSeeder();
+
+            await seeder.SeedAsync(db);
+        }
+
+        app.UseDefaultFiles();
+        app.UseStaticFiles();
+        app.UseExceptionHandler();
         app.MapControllers();
         app.MapOpenApi();
         app.MapScalarApiReference();
-        app.UseExceptionHandler();
-
-        app.UseStaticFiles();
-
+        
         app.Run();
     }
 }

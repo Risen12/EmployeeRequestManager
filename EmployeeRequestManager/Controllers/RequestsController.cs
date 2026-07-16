@@ -51,7 +51,8 @@ public class RequestsController : ControllerBase
         {
             await _employeeRequestService.ChangeRequestExecutorAsync(id, updateRequestDto.NewExecutorId.Value);
         }
-        else if (updateRequestDto.NewStatus != null)
+        
+        if (updateRequestDto.NewStatus != null)
         {
             await _employeeRequestService.ChangeRequestStatusAsync(id, updateRequestDto.NewStatus);
         }

@@ -1,6 +1,4 @@
-﻿using EmployeeRequestManager.Domain.Enums;
-
-namespace EmployeeRequestManager.Application.DTO;
+﻿namespace EmployeeRequestManager.Application.DTO;
 
 public class UpdateEmployeeRequestDto
 {

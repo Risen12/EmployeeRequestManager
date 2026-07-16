@@ -33,10 +33,10 @@ public class EmployeeRequestService
 
     public async Task<EmployeeRequestDto> CreateRequestAsync(EmployeeRequestDto employeeRequest)
     {
-        var request = new EmployeeRequest()
+        var request = new EmployeeRequest
         {
-            RequestCreationDate = employeeRequest.RequestCreationDate,
-            RequestExpirationDate = employeeRequest.RequestExpirationDate,
+            RequestCreationDate = DateTime.UtcNow,
+            RequestExpirationDate = employeeRequest.RequestExpirationDate.ToUniversalTime(),
             Description = employeeRequest.Description,
             Status = RecognizeStatus(employeeRequest.Status)
         };
@@ -91,12 +91,14 @@ public class EmployeeRequestService
         return new EmployeeRequestDto
         {
             Id = request.Id,
-            RequestCreationDate = request.RequestCreationDate,
-            RequestExpirationDate = request.RequestExpirationDate,
+            RequestCreationDate = request.RequestCreationDate.ToUniversalTime(),
+            RequestExpirationDate = request.RequestExpirationDate.ToUniversalTime(),
             Description = request.Description,
             Status = Enum.GetName(typeof(RequestStatus), request.Status),
             AuthorId = request.Author.Id,
-            ExecutorId = request.Executor.Id
+            ExecutorId = request.Executor.Id,
+            AuthorName = request.Author.FullName,
+            ExecutorName = request.Executor.FullName
         };
     }
 

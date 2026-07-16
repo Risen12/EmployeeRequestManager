@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Request Manager</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header>
+    <h1>📋 Управление заявками сотрудников</h1>
+</header>
+
+<main>
+    
+    <section class="card filters-section">
+        <h2>🔍 Фильтры</h2>
+        <div class="filters-grid">
+            <div class="filter-item">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="enableStatusFilter">
+                    <span>По статусу</span>
+                </label>
+                <select id="statusFilter" disabled>
+                    <option value="0">Новая</option>
+                    <option value="1">В работе</option>
+                    <option value="2">Выполнена</option>
+                </select>
+            </div>
+
+            <div class="filter-item">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="enableExecutorFilter">
+                    <span>По ID исполнителя</span>
+                </label>
+                <input type="number" id="executorFilter" placeholder="Введите ID (например, 15)" disabled min="1">
+            </div>
+
+            <div class="filter-item">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="enableDepartmentFilter">
+                    <span>По подразделению</span>
+                </label>
+                <input type="text" id="departmentFilter" placeholder="Подразделение" disabled>
+            </div>
+
+            <div class="filter-item">
+                <label class="checkbox-label">
+                    <input type="checkbox" id="enableOverdueFilter">
+                    <span>Только просроченные</span>
+                </label>
+            </div>
+        </div>
+        <button class="btn btn-primary" onclick="loadRequests()">Применить фильтры</button>
+    </section>
+    
+    <section class="card create-section">
+        <h2>➕ Создать заявку</h2>
+        <form id="createForm" class="form-grid">
+            <div class="form-group">
+                <label>Описание</label>
+                <textarea id="createDescription" required placeholder="Описание заявки"></textarea>
+            </div>
+            <div class="form-group">
+                <label>Срок выполнения</label>
+                <input type="datetime-local" id="createDeadline" required>
+            </div>
+            <div class="form-group">
+                <label>ID Автора</label>
+                <input type="number" id="createAuthorId" required min="1" placeholder="ID сотрудника">
+            </div>
+            <div class="form-group">
+                <label>ID Исполнителя</label>
+                <input type="number" id="createExecutorId" required min="1" placeholder="ID сотрудника">
+            </div>
+            <button type="submit" class="btn btn-success">Создать заявку</button>
+        </form>
+    </section>
+    
+    <section class="card reports-section">
+        <h2>📊 Отчёты</h2>
+        <div class="reports-buttons">
+            <button class="btn btn-secondary" onclick="getReport('by-status')">Заявки по статусам</button>
+            <button class="btn btn-secondary" onclick="getReport('overdue-count')">Количество просроченных</button>
+            <button class="btn btn-secondary" onclick="getReport('by-executor')">Выполненные по исполнителям</button>
+        </div>
+        <div id="reportResult" class="report-result"></div>
+    </section>
+    
+    <section class="card update-section">
+        <h2>✏️ Изменить заявку</h2>
+        <form id="updateForm" class="form-grid">
+            <div class="form-group">
+                <label>ID заявки</label>
+                <input type="number" id="updateRequestId" required min="1" placeholder="ID заявки">
+            </div>
+            <div class="form-group">
+                <label>Новый статус</label>
+                <select id="updateStatus">
+                    <option value="">-- Не изменять статус --</option>
+                    <option value="New">Новая</option>
+                    <option value="InProgress">В работе</option>
+                    <option value="Done">Выполнена</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Новый ID исполнителя</label>
+                <input type="number" id="updateExecutorId" min="1" placeholder="Оставьте пустым, чтобы не менять">
+            </div>
+            <button type="submit" class="btn btn-warning">Изменить</button>
+        </form>
+    </section>
+    
+    <section class="card table-section">
+        <h2>📋 Список заявок</h2>
+        <div class="table-wrapper">
+            <table id="requestsTable">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Дата создания</th>
+                    <th>Автор</th>
+                    <th>Исполнитель</th>
+                    <th>Описание</th>
+                    <th>Статус</th>
+                    <th>Срок</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td colspan="7" class="empty-message">Загрузка данных...</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+</main>
+
+<script src="app.js"></script>
+</body>
+</html>
