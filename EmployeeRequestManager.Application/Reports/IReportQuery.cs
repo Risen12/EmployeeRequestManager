@@ -1,6 +1,6 @@
-﻿using EmployeeRequestManager.Domain.Entities;
+﻿using EmployeeRequestManager.Domain.Repositories;
 
-namespace EmployeeRequestManager.Domain.Repositories;
+namespace EmployeeRequestManager.Application.Reports;
 
 public interface IReportQuery
 {

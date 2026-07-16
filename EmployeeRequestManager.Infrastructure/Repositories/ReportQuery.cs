@@ -1,5 +1,7 @@
-﻿using EmployeeRequestManager.Domain.Enums;
+﻿using EmployeeRequestManager.Application.Reports;
+using EmployeeRequestManager.Domain.Enums;
 using EmployeeRequestManager.Domain.Repositories;
+using EmployeeRequestManager.Infrastructure.ValueConverters;
 using Microsoft.EntityFrameworkCore;
 
 namespace EmployeeRequestManager.Infrastructure.Repositories;
@@ -17,9 +19,12 @@ public class ReportQuery : IReportQuery
     {
         ReportDto report = new ReportDto();
 
+        var converter = new StatusConverter();
+        var toDbFunc = converter.ConvertToProviderExpression.Compile();
+        
         var requestByStatus = _context.EmployeeRequests.GroupBy(e => e.Status)
             .Select(g => new { Status = g.Key, Count = g.Count() })
-            .ToDictionaryAsync(x => x.Status.ToString(), x => x.Count);
+            .ToDictionaryAsync(x => toDbFunc(x.Status), x => x.Count);
 
         report.RequestsCountByStatus = await requestByStatus;
 
@@ -28,7 +33,7 @@ public class ReportQuery : IReportQuery
         
         report.CompletedRequestsByExecutor = await completedRequestsByExecutor;
 
-        var overdueRequestsCount = _context.EmployeeRequests.Count(r => r.Status == RequestStatus.InProgress && r.RequestExpirationDate < DateTime.Now);
+        var overdueRequestsCount = _context.EmployeeRequests.Count(r => r.Status == RequestStatus.InProgress || r.Status == RequestStatus.New && r.RequestExpirationDate < DateTime.Now);
         
         report.OverdueRequestsCount = overdueRequestsCount;
         

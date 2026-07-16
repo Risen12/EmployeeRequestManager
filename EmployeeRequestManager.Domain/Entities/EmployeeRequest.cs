@@ -17,8 +17,8 @@ public class EmployeeRequest
 
     public void ChangeStatus(RequestStatus newStatus)
     {
-        if (Status == RequestStatus.New && newStatus != RequestStatus.InProgress
-            || Status == RequestStatus.InProgress && newStatus != RequestStatus.Completed
+        if ((Status == RequestStatus.New && newStatus != RequestStatus.InProgress)
+            || (Status == RequestStatus.InProgress && newStatus != RequestStatus.Completed)
             || Status == RequestStatus.Completed)
         {
             throw new InvalidStatusTransitionException(Status, newStatus);

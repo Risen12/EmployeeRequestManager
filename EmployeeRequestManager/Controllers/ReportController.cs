@@ -1,4 +1,5 @@
-﻿using EmployeeRequestManager.Domain.Repositories;
+﻿using EmployeeRequestManager.Application.Reports;
+using EmployeeRequestManager.Domain.Repositories;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EmployeeRequestManager.Controllers;

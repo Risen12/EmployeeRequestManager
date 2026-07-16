@@ -46,6 +46,8 @@ public class EmployeeRequestService
 
         request.Executor = executor;
         request.Author = author;
+        request.ExecutorId = executor.Id;
+        request.AuthorId = author.Id;
 
         await _employeeRequestRepository.CreateRequestAsync(request);
         
@@ -59,11 +61,13 @@ public class EmployeeRequestService
         return ConvertToDto(requests);
     }
 
-    public async Task<EmployeeRequestDto> ChangeRequestStatusAsync(int id, RequestStatus requestStatus)
+    public async Task<EmployeeRequestDto> ChangeRequestStatusAsync(int id, string newStatus)
     {
         var request = await _employeeRequestRepository.GetRequestByIdAsync(id);
         
-        request.ChangeStatus(requestStatus);
+        var newConvertedStatus = RecognizeStatus(newStatus);
+        
+        request.ChangeStatus(newConvertedStatus);
         
         await _employeeRequestRepository.UpdateRequestAsync(request);
         

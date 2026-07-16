@@ -2,6 +2,7 @@
 using EmployeeRequestManager.Domain.Enums;
 using EmployeeRequestManager.Domain.Exceptions;
 using EmployeeRequestManager.Domain.Repositories;
+using EmployeeRequestManager.Infrastructure.ValueConverters;
 using Microsoft.EntityFrameworkCore;
 
 namespace EmployeeRequestManager.Infrastructure.Repositories;
@@ -61,11 +62,18 @@ public class EmployeeRequestRepository : IEmployeeRequestRepository
         var executorId = filter.ExecutorId;
         var status = filter.Status;
 
-        if (filter.IsOverdue != null)
+        if (filter.IsOverdue != null )
         {
-            requests = requests.Where(r => r.Status == RequestStatus.InProgress 
-                                           || r.Status == RequestStatus.New
-                                           && r.RequestExpirationDate < DateTime.Now);
+            if (filter.IsOverdue == true)
+            {
+                requests = requests.Where(r =>
+                    (r.Status == RequestStatus.InProgress || r.Status == RequestStatus.New)
+                    && r.RequestExpirationDate < DateTime.Now);
+            }
+            else
+            {
+                requests = requests.Where(r =>  r.RequestExpirationDate >= DateTime.Now);
+            }
         }
 
         if (department != null)
@@ -80,7 +88,10 @@ public class EmployeeRequestRepository : IEmployeeRequestRepository
 
         if (status != null)
         {
-            requests = requests.Where(r => r.Status == status);
+            var converter = new StatusConverter();
+            var funcToDb = converter.ConvertFromProviderExpression.Compile();
+            
+            requests = requests.Where(r => r.Status == funcToDb(status));
         }
 
         return await requests.ToListAsync();

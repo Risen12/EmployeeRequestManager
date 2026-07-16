@@ -10,8 +10,4 @@
       <ProjectReference Include="..\EmployeeRequestManager.Domain\EmployeeRequestManager.Domain.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Results\" />
-    </ItemGroup>
-
 </Project>

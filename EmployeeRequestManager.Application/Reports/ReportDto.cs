@@ -1,4 +1,4 @@
-﻿namespace EmployeeRequestManager.Domain.Repositories;
+﻿namespace EmployeeRequestManager.Application.Reports;
 
 public class ReportDto
 {

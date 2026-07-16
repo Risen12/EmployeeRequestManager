@@ -1,3 +1,4 @@
+using EmployeeRequestManager.Application.Reports;
 using EmployeeRequestManager.Application.Services;
 using EmployeeRequestManager.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -22,13 +23,16 @@ public class Program
         builder.Services.AddScoped<IReportQuery, ReportQuery>();
         builder.Services.AddOpenApi();
         builder.Services.AddControllers();
+        builder.Services.AddProblemDetails();
+        builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
         
         var app = builder.Build();
         app.MapControllers();
         app.MapOpenApi();
         app.MapScalarApiReference();
+        app.UseExceptionHandler();
 
-        //app.UseStaticFiles();
+        app.UseStaticFiles();
 
         app.Run();
     }
