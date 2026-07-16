@@ -1,5 +1,5 @@
 ﻿using EmployeeRequestManager.Domain.Entities;
-using EmployeeRequestManager.Domain.Exeptions;
+using EmployeeRequestManager.Domain.Exceptions;
 using EmployeeRequestManager.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,7 +16,9 @@ public class EmployeeRequestRepository : IEmployeeRequestRepository
     
     public async Task<EmployeeRequest> GetRequestByIdAsync(int id)
     {
-        var request = await _context.Set<EmployeeRequest>().FirstOrDefaultAsync(x => x.Id == id);
+        var request = await _context.Set<EmployeeRequest>().Include(r => r.Author)
+            .Include(r => r.Executor)
+            .FirstOrDefaultAsync(x => x.Id == id);
 
         return request == null ? throw new NotFoundRequestException(id) : request;
     }
@@ -49,7 +51,10 @@ public class EmployeeRequestRepository : IEmployeeRequestRepository
 
     public async Task<IReadOnlyList<EmployeeRequest>> GetRequestByFilterAsync(RequestFilter filter)
     {
-        var requests = _context.Set<EmployeeRequest>().AsQueryable();
+        var requests = _context.Set<EmployeeRequest>()
+            .Include(r => r.Executor)
+            .Include(r => r.Author)
+            .AsQueryable();
         
         var department = filter.Department;
         var executorId = filter.ExecutorId;

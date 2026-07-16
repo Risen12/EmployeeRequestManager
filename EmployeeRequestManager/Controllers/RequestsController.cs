@@ -38,27 +38,25 @@ public class RequestsController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<EmployeeRequestDto>> CreateRequest(EmployeeRequestDto request)
     {
-        await _employeeRequestService.CreateRequestAsync(request);
-        
-        return  Ok(request);
+        var createdRequest = await _employeeRequestService.CreateRequestAsync(request);
+
+        return CreatedAtAction(nameof(GetEmployeeRequest), new { id = createdRequest.Id }, createdRequest);
     }
 
     [HttpPut("{id}")]
-    public async Task<ActionResult<EmployeeRequestDto>> UpdateRequest(int id, int newExecutorId)
+    public async Task<ActionResult<EmployeeRequestDto>> UpdateRequest(int id, UpdateEmployeeRequestDto updateRequestDto)
     {
-        var baseRequest = await _employeeRequestService.GetRequestByIdAsync(id);
 
-        if (baseRequest.ExecutorId != newExecutorId)
+        if (updateRequestDto.NewExecutorId.HasValue == true)
         {
-            await _employeeRequestService.ChangeRequestExecutorAsync(id, newExecutorId);
+            await _employeeRequestService.ChangeRequestExecutorAsync(id, updateRequestDto.NewExecutorId.Value);
         }
-
-        if (baseRequest.Status != )
+        else if (updateRequestDto.NewStatus.HasValue == true)
         {
-            await _employeeRequestService.ChangeRequestStatusAsync(id, request.Status);
+            await _employeeRequestService.ChangeRequestStatusAsync(id, updateRequestDto.NewStatus.Value);
         }
         
-        baseRequest = await _employeeRequestService.GetRequestByIdAsync(id);
+       var baseRequest = await _employeeRequestService.GetRequestByIdAsync(id);
         
         return Ok(baseRequest);
     }

@@ -1,7 +1,7 @@
 ﻿using EmployeeRequestManager.Application.DTO;
 using EmployeeRequestManager.Domain.Entities;
 using EmployeeRequestManager.Domain.Enums;
-using EmployeeRequestManager.Domain.Exeptions;
+using EmployeeRequestManager.Domain.Exceptions;
 using EmployeeRequestManager.Domain.Repositories;
 
 namespace EmployeeRequestManager.Application.Services;
@@ -28,7 +28,7 @@ public class EmployeeRequestService
     {
         var requests = await _employeeRequestRepository.GetAllRequestsAsync();
         
-        return await ConvertToDto(requests);
+        return ConvertToDto(requests);
     }
 
     public async Task<EmployeeRequestDto> CreateRequestAsync(EmployeeRequestDto employeeRequest)
@@ -56,7 +56,7 @@ public class EmployeeRequestService
     {
         var requests =  await _employeeRequestRepository.GetRequestByFilterAsync(filter);
         
-        return await ConvertToDto(requests);
+        return ConvertToDto(requests);
     }
 
     public async Task<EmployeeRequestDto> ChangeRequestStatusAsync(int id, RequestStatus requestStatus)
@@ -96,7 +96,7 @@ public class EmployeeRequestService
         };
     }
 
-    private async Task<List<EmployeeRequestDto>> ConvertToDto(IEnumerable<EmployeeRequest> requests)
+    private List<EmployeeRequestDto> ConvertToDto(IEnumerable<EmployeeRequest> requests)
     {
         var resultRequests = new  List<EmployeeRequestDto>();
         

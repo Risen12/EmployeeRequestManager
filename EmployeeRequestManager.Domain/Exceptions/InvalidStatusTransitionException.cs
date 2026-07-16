@@ -1,6 +1,6 @@
 ﻿using EmployeeRequestManager.Domain.Enums;
 
-namespace EmployeeRequestManager.Domain.Exeptions;
+namespace EmployeeRequestManager.Domain.Exceptions;
 
 public class InvalidStatusTransitionException : Exception
 {

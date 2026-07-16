@@ -1,5 +1,5 @@
 ﻿using EmployeeRequestManager.Domain.Entities;
-using EmployeeRequestManager.Domain.Exeptions;
+using EmployeeRequestManager.Domain.Exceptions;
 using EmployeeRequestManager.Domain.Repositories;
 using Microsoft.EntityFrameworkCore;
 

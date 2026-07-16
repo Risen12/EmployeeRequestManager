@@ -1,4 +1,4 @@
-﻿namespace EmployeeRequestManager.Domain.Exeptions;
+﻿namespace EmployeeRequestManager.Domain.Exceptions;
 
 public class NotFoundRequestException : Exception
 {

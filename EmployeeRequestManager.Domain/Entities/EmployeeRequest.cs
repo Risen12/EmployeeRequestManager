@@ -1,5 +1,5 @@
 ﻿using EmployeeRequestManager.Domain.Enums;
-using EmployeeRequestManager.Domain.Exeptions;
+using EmployeeRequestManager.Domain.Exceptions;
 
 namespace EmployeeRequestManager.Domain.Entities;
 
