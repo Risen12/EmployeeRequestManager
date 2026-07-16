@@ -15,10 +15,14 @@ public class Program
         var connection = builder.Configuration.GetConnectionString("DefaultConnection");
         
         builder.Services.AddDbContext<ApplicationDbContext>(options => options.UseSqlite(connection));
-        builder.Services.AddSingleton<EmployeeRequestService>();
-        builder.Services.AddSingleton<IReportQuery, ReportQuery>();
+        builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+        builder.Services.AddScoped<IEmployeeRequestRepository, EmployeeRequestRepository>();
+        builder.Services.AddScoped<EmployeeRequestService>();
+        builder.Services.AddScoped<IReportQuery, ReportQuery>();
+        builder.Services.AddControllers();
         
         var app = builder.Build();
+        app.MapControllers();
 
         app.UseStaticFiles();
 

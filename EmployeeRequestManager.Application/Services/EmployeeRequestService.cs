@@ -1,7 +1,6 @@
 ﻿using EmployeeRequestManager.Application.DTO;
 using EmployeeRequestManager.Domain.Entities;
 using EmployeeRequestManager.Domain.Enums;
-using EmployeeRequestManager.Domain.Exceptions;
 using EmployeeRequestManager.Domain.Repositories;
 
 namespace EmployeeRequestManager.Application.Services;

@@ -13,4 +13,28 @@ public class ReportsController
     {
         _reportQuery = reportQuery;
     }
+
+    [HttpGet("overduerequests")]
+    public async Task<int> GetOverdueRequests()
+    {
+        var reports = await _reportQuery.GetReportAsync();
+
+        return reports.OverdueRequestsCount;
+    }
+
+    [HttpGet("RequestByStatus")]
+    public async Task<Dictionary<string, int>> GetRequestsByStatusAsync()
+    {
+        var reports = await _reportQuery.GetReportAsync();
+
+        return reports.RequestsCountByStatus;
+    }
+
+    [HttpGet("CompletedRequestsByExecutor")]
+    public async Task<Dictionary<string, int>> GetCompletedRequestsByExecutorAsync()
+    {
+        var reports = await _reportQuery.GetReportAsync();
+
+        return reports.CompletedRequestsByExecutor;
+    }
 }

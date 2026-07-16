@@ -27,6 +27,10 @@ public class ReportQuery : IReportQuery
             .GroupBy(r => r.Executor.FullName).Select(g => new { Name = g.Key, Count = g.Count() }).ToDictionaryAsync(x => x.Name, x => x.Count);
         
         report.CompletedRequestsByExecutor = await completedRequestsByExecutor;
+
+        var overdueRequestsCount = _context.EmployeeRequests.Count(r => r.Status == RequestStatus.InProgress && r.RequestExpirationDate < DateTime.Now);
+        
+        report.OverdueRequestsCount = overdueRequestsCount;
         
         return report;
     }
